@@ -11,29 +11,32 @@ public class ReservaService {
             int cantidadSolicitada,
             LocalDateTime fechaReserva) {
 
-        // Validar que la cantidad sea válida
+        // REQ-01: La cantidad solicitada debe ser mayor que cero.
         if (cantidadSolicitada <= 0) {
             System.out.println("Error: la cantidad debe ser mayor a cero.");
             return false;
         }
 
-        // Validar disponibilidad del producto
+        // REQ-02: El sistema debe verificar que exista inventario suficiente.
         if (cantidadSolicitada > cantidadDisponible) {
             System.out.println("Error: no hay suficiente inventario.");
             return false;
         }
 
-        // Validar fecha límite: viernes a las 6:00 p. m.
+        // REQ-03: Las reservas no se permiten después del viernes a las 6:00 p. m.
         if (fechaReserva.getDayOfWeek() == DayOfWeek.FRIDAY
                 && fechaReserva.toLocalTime()
                 .isAfter(LocalTime.of(18, 0))) {
-            System.out.println("Error: las reservas cerraron el viernes a las 6:00 p. m.");
+            System.out.println(
+                "Error: las reservas cerraron el viernes a las 6:00 p. m."
+            );
             return false;
         }
 
-        // Aceptar la reserva
+        // REQ-04: Si se cumplen las validaciones, se calcula el inventario restante.
         int inventarioRestante = cantidadDisponible - cantidadSolicitada;
 
+        // REQ-05: El sistema informa que la reserva fue aceptada.
         System.out.println("Reserva realizada correctamente.");
         System.out.println("Producto: " + nombreProducto);
         System.out.println("Inventario restante: " + inventarioRestante);
@@ -44,6 +47,7 @@ public class ReservaService {
     public static void main(String[] args) {
         ReservaService servicio = new ReservaService();
 
+        // PRUEBA: Se reservan 5 unidades de yuca de un inventario de 20.
         servicio.reservarProducto(
                 "Yuca",
                 20,
@@ -52,3 +56,4 @@ public class ReservaService {
         );
     }
 }
+
